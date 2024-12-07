@@ -88,6 +88,14 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
     `];
   }
 
+  updateCharacter() {
+    const character = this.shadowRoot.querySelector('rpg-character');
+    Object.entries(this.characterSettings).forEach(([key, value]) => {
+      character[key] = value;
+    });
+    character.seed = this.seed;
+  }
+
   // Lit render the HTML
   render() {
     return html`

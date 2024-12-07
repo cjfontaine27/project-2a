@@ -57,16 +57,31 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
         color: var(--ddd-theme-primary);
         background-color: var(--ddd-theme-accent);
         font-family: var(--ddd-font-navigation);
+        margin: 1rem;
       }
 
       .container {
         display: flex;
         flex-wrap: wrap;
       }
+
+      .character-container {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+      }
+
       .wrapper {
         margin: var(--ddd-spacing-2);
         padding: var(--ddd-spacing-4);
       }
+
+      wired-input,
+      wired-combo,
+      wired-checkbox {
+        width: 100%;
+      }
+
       h3 span {
         font-size: var(--project-2a-label-font-size, var(--ddd-font-size-s));
       }

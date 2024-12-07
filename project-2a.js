@@ -22,20 +22,22 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
 
   constructor() {
     super();
-    this.accessories = 0;
-    this.base = 1;
-    this.face = 0;
-    this.faceitem = 0;
-    this.hair = 0;
-    this.pants = 0;
-    this.shirt = 0;
-    this.skin = 0;
-    this.hatcolor = 0;
-    this.hat = "";
-    this.fire = false;
-    this.walking = false;
-    this.circle = false;
-    this.loadFromUrl();
+    this.seed = this.getInitialSeed();
+    this.characterSettings = {
+      accessories: 0,
+      base: 1,
+      face: 0,
+      faceitem: 0,
+      hair: 0,
+      pants: 0,
+      shirt: 0,
+      skin: 0,
+      hatcolor: 0,
+      hat: 'none',
+      fire: false,
+      walking: false,
+      circle: false,
+    };
   }
 
   // Lit reactive properties

@@ -43,22 +43,8 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
   // Lit reactive properties
   static get properties() {
     return {
-      ...super.properties,
-      title: { type: String },
-      accessories: { type: Number },
-      base: { type: Number },
-      face: { type: Number },
-      faceitem: { type: Number },
-      hair: { type: Number },
-      pants: { type: Number },
-      shirt: { type: Number },
-      skin: { type: Number },
-      hatcolor: { type: Number },
-      hat: { type: String },
-      fire: { type: Boolean, reflect: true },
-      walking: { type: Boolean, reflect: true },
-      circle: { type: Boolean },
-      seed: { type: String, reflect: true}
+      seed: { type: String },
+      characterSettings: { type: Object },
     };
   }
 

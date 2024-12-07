@@ -102,28 +102,27 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
   // Lit render the HTML
   render() {
     return html`
-<div class="wrapper">
-
-  <div class="character-container">
-    <rpg-character
-    .seed="${this.seed}"
-    width="300"
-    height="400"
-    .accessories="${this.charAttributes.accessories}"
-    .base="${this.charAttributes.base}"
-    .face="${this.charAttributes.face}"
-    .faceitem="${this.charAttributes.faceitem}"
-    .hair="${this.charAttributes.hair}"
-    .pants="${this.charAttributes.pants}"
-    .shirt="${this.charAttributes.shirt}"
-    .skin="${this.charAttributes.skin}"
-    .hatcolor="${this.charAttributes.hatcolor}"
-    .hat="${this.charAttributes.hat}"
-    .fire="${this.charAttributes.fire}"
-    .walking="${this.charAttributes.walking}"
-    .circle="${this.charAttributes.circle}"
-    ></rpg-character>
-  </div>
+      <div class="wrapper">
+        <div class="character-container">
+          <rpg-character
+          .seed="${this.seed}"
+          width="300"
+          height="400"
+          .accessories="${this.charAttributes.accessories}"
+          .base="${this.charAttributes.base}"
+          .face="${this.charAttributes.face}"
+          .faceitem="${this.charAttributes.faceitem}"
+          .hair="${this.charAttributes.hair}"
+          .pants="${this.charAttributes.pants}"
+          .shirt="${this.charAttributes.shirt}"
+          .skin="${this.charAttributes.skin}"
+          .hatcolor="${this.charAttributes.hatcolor}"
+          .hat="${this.charAttributes.hat}"
+          .fire="${this.charAttributes.fire}"
+          .walking="${this.charAttributes.walking}"
+          .circle="${this.charAttributes.circle}"
+          ></rpg-character>
+      </div>
   <div class="controls-container">
     <wired-input
     name="accessories"

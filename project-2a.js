@@ -5,6 +5,8 @@
 import { LitElement, html, css } from "lit";
 import { DDDSuper } from "@haxtheweb/d-d-d/d-d-d.js";
 import { I18NMixin } from "@haxtheweb/i18n-manager/lib/I18NMixin.js";
+import "@haxtheweb/rpg-character/rpg-character.js";
+import "wired-elements";
 
 /**
  * `project-2a`
@@ -20,19 +22,20 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
 
   constructor() {
     super();
-    this.title = "";
-    this.t = this.t || {};
-    this.t = {
-      ...this.t,
-      title: "Title",
-    };
-    this.registerLocalization({
-      context: this,
-      localesPath:
-        new URL("./locales/project-2a.ar.json", import.meta.url).href +
-        "/../",
-      locales: ["ar", "es", "hi", "zh"],
-    });
+    this.accessories = 0;
+    this.base = 1;
+    this.face = 0;
+    this.faceitem = 0;
+    this.hair = 0;
+    this.pants = 0;
+    this.shirt = 0;
+    this.skin = 0;
+    this.hatcolor = 0;
+    this.hat = "";
+    this.fire = false;
+    this.walking = false;
+    this.circle = false;
+    this.loadFromUrl();
   }
 
   // Lit reactive properties
@@ -40,6 +43,20 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
     return {
       ...super.properties,
       title: { type: String },
+      accessories: { type: Number },
+      base: { type: Number },
+      face: { type: Number },
+      faceitem: { type: Number },
+      hair: { type: Number },
+      pants: { type: Number },
+      shirt: { type: Number },
+      skin: { type: Number },
+      hatcolor: { type: Number },
+      hat: { type: String },
+      fire: { type: Boolean, reflect: true },
+      walking: { type: Boolean, reflect: true },
+      circle: { type: Boolean },
+      seed: { type: String, reflect: true}
     };
   }
 

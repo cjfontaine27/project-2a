@@ -86,14 +86,14 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
 
   handleInputChange(event) {
     const { name, value, type, checked } = event.target;
-    this.characterSettings[name] = type === 'checkbox' ? checked : value;
+    this.charAttributes[name] = type === 'checkbox' ? checked : value;
     this.requestUpdate();
     //this.updateSeedFromSettings();
   }
 
   updateCharacter() {
     const character = this.shadowRoot.querySelector('rpg-character');
-    Object.entries(this.characterSettings).forEach(([key, value]) => {
+    Object.entries(this.charAttributes).forEach(([key, value]) => {
       character[key] = value;
     });
     character.seed = this.seed;

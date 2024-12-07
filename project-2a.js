@@ -99,7 +99,28 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
   // Lit render the HTML
   render() {
     return html`
-<div class="wrapper">
+<div class="container">
+
+  <div class="character-container">
+    <rpg-character
+    .seed="${this.seed}"
+    width="300"
+    height="400"
+    .accessories="${this.characterSettings.accessories}"
+    .base="${this.characterSettings.base}"
+    .face="${this.characterSettings.face}"
+    .faceitem="${this.characterSettings.faceitem}"
+    .hair="${this.characterSettings.hair}"
+    .pants="${this.characterSettings.pants}"
+    .shirt="${this.characterSettings.shirt}"
+    .skin="${this.characterSettings.skin}"
+    .hatcolor="${this.characterSettings.hatcolor}"
+    .hat="${this.characterSettings.hat}"
+    .fire="${this.characterSettings.fire}"
+    .walking="${this.characterSettings.walking}"
+    .circle="${this.characterSettings.circle}"
+    ></rpg-character>
+  </div>
   <h3><span>${this.t.title}:</span> ${this.title}</h3>
   <slot></slot>
 </div>`;

@@ -23,7 +23,7 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
   constructor() {
     super();
     this.seed = this.getInitialSeed();
-    this.characterSettings = {
+    this.charAttributes = {
       accessories: 0,
       base: 1,
       face: 0,
@@ -44,7 +44,7 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
   static get properties() {
     return {
       seed: { type: String },
-      characterSettings: { type: Object },
+      charAttributes: { type: Object },
     };
   }
 
@@ -57,6 +57,11 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
         color: var(--ddd-theme-primary);
         background-color: var(--ddd-theme-accent);
         font-family: var(--ddd-font-navigation);
+      }
+
+      .container {
+        display: flex;
+        flex-wrap: wrap;
       }
       .wrapper {
         margin: var(--ddd-spacing-2);

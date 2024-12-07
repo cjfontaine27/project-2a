@@ -60,7 +60,7 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
         margin: 1rem;
       }
 
-      .container {
+      .wrapper {
         display: flex;
         flex-wrap: wrap;
       }
@@ -71,10 +71,6 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
         justify-content: center;
       }
 
-      .wrapper {
-        margin: var(--ddd-spacing-2);
-        padding: var(--ddd-spacing-4);
-      }
 
       wired-input,
       wired-combo,
@@ -88,6 +84,7 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
     `];
   }
 
+
   updateCharacter() {
     const character = this.shadowRoot.querySelector('rpg-character');
     Object.entries(this.characterSettings).forEach(([key, value]) => {
@@ -99,7 +96,7 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
   // Lit render the HTML
   render() {
     return html`
-<div class="container">
+<div class="wrapper">
 
   <div class="character-container">
     <rpg-character
@@ -120,6 +117,25 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
     .walking="${this.characterSettings.walking}"
     .circle="${this.characterSettings.circle}"
     ></rpg-character>
+  </div>
+  <div class="controls-container">
+    <wired-input
+    name="accessories"
+    type="number"
+    min="0"
+    max="9"
+    placeholder="Accessories"
+    @change="${this.handleInputChange}"
+    ></wired-input>
+
+    <wired-input
+    name="base"
+    type="number"
+    min="1"
+    max="9"
+    placeholder="Base"
+    @change="${this.handleInputChange}"
+    ></wired-input>
   </div>
   <h3><span>${this.t.title}:</span> ${this.title}</h3>
   <slot></slot>

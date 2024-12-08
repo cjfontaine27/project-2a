@@ -1,225 +1,218 @@
 /**
- * Copyright 2024 Christina
+ * Copyright 2024 Christina & Eglicky
  * @license Apache-2.0, see LICENSE for full text.
  */
 import { LitElement, html, css } from "lit";
 import { DDDSuper } from "@haxtheweb/d-d-d/d-d-d.js";
 import { I18NMixin } from "@haxtheweb/i18n-manager/lib/I18NMixin.js";
-import { WiredButton, WiredCheckbox, WiredCombo, WiredInput } from "wired-elements";
-import "@haxtheweb/rpg-character/rpg-character.js";
 import "wired-elements";
-
+import "@haxtheweb/rpg-character/rpg-character.js";
 
 /**
  * `project-2a`
- * 
+ * A character editor tool combining functionality and design elements.
  * @demo index.html
  * @element project-2a
  */
 export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
-
   static get tag() {
     return "project-2a";
   }
 
   constructor() {
     super();
-    this.seed = this.getInitialSeed();
+    this.title = "Design Your Character";
     this.characterSettings = {
-      accessories: 0,
-      base: 1,
+      seed: "00000000",
+      base: 0,
       face: 0,
       faceitem: 0,
       hair: 0,
       pants: 0,
       shirt: 0,
       skin: 0,
-      hatcolor: 0,
-      hat: 'none',
+      glasses: false,
+      hatColor: 0,
+      size: 200,
+      name: "",
       fire: false,
       walking: false,
-      circle: false,
     };
+    this._applySeedToSettings();
   }
 
-  // Lit reactive properties
   static get properties() {
     return {
-      seed: { type: String },
+      ...super.properties,
       characterSettings: { type: Object },
     };
   }
 
-  // Lit scoped styles
   static get styles() {
-    return [super.styles,
-    css`
-      :host {
-        display: flex;
-        color: var(--ddd-theme-primary);
-        background-color: var(--ddd-theme-accent);
-        font-family: var(--ddd-font-navigation);
-        margin: 1rem;
-      }
-
-      .wrapper {
-        display: flex;
-        flex-wrap: wrap;
-      }
-
-      .character-container {
-        flex: 1;
-        display: flex;
-        justify-content: center;
-      }
-
-
-      wired-input,
-      wired-combo,
-      wired-checkbox {
-        width: 100%;
-      }
-
-      h3 span {
-        font-size: var(--project-2a-label-font-size, var(--ddd-font-size-s));
-      }
-    `];
+    return [
+      super.styles,
+      css`
+        :host {
+          display: block;
+          font-family: var(--ddd-font-navigation);
+        }
+        .container {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 20px;
+          justify-content: center;
+          align-items: flex-start;
+          padding: 20px;
+        }
+        .character-preview {
+          flex: 1;
+          min-width: 300px;
+          text-align: center;
+          position: relative;
+        }
+        .character-preview rpg-character {
+          height: var(--character-size, 200px);
+          width: var(--character-size, 200px);
+          transition: height 0.3s ease, width 0.3s ease;
+        }
+        .controls {
+          flex: 1;
+          min-width: 300px;
+          text-align: left;
+        }
+        wired-input,
+        wired-checkbox,
+        wired-slider {
+          display: block;
+          margin-bottom: 15px;
+          max-width: 300px;
+        }
+        label {
+          display: block;
+          font-size: 14px;
+          font-weight: bold;
+          margin-bottom: 5px;
+        }
+        button {
+          margin-top: 10px;
+          padding: 10px 20px;
+          cursor: pointer;
+          background-color: #007bff;
+          color: white;
+          border: 1px solid #0056b3;
+          border-radius: 4px;
+          font-size: 16px;
+          transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        button:hover {
+          background-color: #0056b3;
+          border-color: #004085;
+        }
+      `,
+    ];
   }
 
-  getInitialSeed() {
-    const params = new URLSearchParams(window.location.search);
-    return params.get('seed') || this.generateRandomSeed();
-  }
-
-  getInitialSeed() {
-    const params = new URLSearchParams(window.location.search);
-    return params.get('seed') || this.generateRandomSeed();
-  }
-
-  updateSeedFromSettings() {
-    const { accessories, base, face, faceitem, hair, pants, shirt, skin, hatcolor } = this.characterSettings;
-    this.seed = `${accessories}${base}${face}${faceitem}${hair}${pants}${shirt}${skin}${hatcolor}`;
-    this.updateURL();
-  }
-
-  updateURL() {
-    const params = new URLSearchParams(this.characterSettings);
-    params.set('seed', this.seed);
-    history.replaceState({}, '', `?${params.toString()}`);
-  }
-
-  handleInputChange(event) {
-    const { name, value, type, checked } = event.target;
-    this.characterSettings[name] = type === 'checkbox' ? checked : value;
-    this.requestUpdate();
-    this.updateSeedFromSettings();
-  }
-
-  updateCharacter() {
-    const character = this.shadowRoot.querySelector('rpg-character');
-    Object.entries(this.characterSettings).forEach(([key, value]) => {
-      character[key] = value;
-    });
-    character.seed = this.seed;
-  }
-
-  copyShareLink() {
-    const shareLink = window.location.href;
-    navigator.clipboard.writeText(shareLink).then(() => {
-      alert('Share link copied to clipboard!');
-    });
-  }
-
-  // Lit render the HTML
   render() {
     return html`
-      <div class="wrapper">
-        <div class="character-container">
+      <div class="container">
+        <div class="character-preview">
           <rpg-character
-          .seed="${this.seed}"
-          width="300"
-          height="400"
-          .accessories="${this.characterSettings.accessories}"
-          .base="${this.characterSettings.base}"
-          .face="${this.characterSettings.face}"
-          .faceitem="${this.characterSettings.faceitem}"
-          .hair="${this.characterSettings.hair}"
-          .pants="${this.characterSettings.pants}"
-          .shirt="${this.characterSettings.shirt}"
-          .skin="${this.characterSettings.skin}"
-          .hatcolor="${this.characterSettings.hatcolor}"
-          .hat="${this.characterSettings.hat}"
-          .fire="${this.characterSettings.fire}"
-          .walking="${this.characterSettings.walking}"
-          .circle="${this.characterSettings.circle}"
+            base="${this.characterSettings.base}"
+            face="${this.characterSettings.face}"
+            faceitem="${this.characterSettings.faceitem}"
+            hair="${this.characterSettings.hair}"
+            pants="${this.characterSettings.pants}"
+            shirt="${this.characterSettings.shirt}"
+            skin="${this.characterSettings.skin}"
+            hatColor="${this.characterSettings.hatColor}"
+            .fire="${this.characterSettings.fire}"
+            .walking="${this.characterSettings.walking}"
+            style="
+              --character-size: ${this.characterSettings.size}px;
+              --hat-color: hsl(${this.characterSettings.hatColor}, 100%, 50%);
+            "
           ></rpg-character>
+        </div>
+        <div class="controls">
+          <label for="characterNameInput">Character Name:</label>
+          <wired-input
+            id="characterNameInput"
+            type="text"
+            placeholder="Enter character name"
+            @input="${(e) => this._updateSetting('name', e.target.value)}"
+          ></wired-input>
+
+          <label for="hairToggle">Hair:</label>
+          <wired-checkbox
+            id="hairToggle"
+            ?checked="${this.characterSettings.base === 1}"
+            @change="${(e) =>
+              this._updateSetting('base', e.target.checked ? 1 : 0)}"
+            >Has Hair</wired-checkbox
+          >
+
+          <label for="size">Character Size:</label>
+          <wired-slider
+            id="size"
+            value="${this.characterSettings.size}"
+            min="100"
+            max="600"
+            @change="${(e) =>
+              this._updateSetting('size', parseInt(e.detail.value))}"
+          ></wired-slider>
+
+          <label for="face">Face:</label>
+          <wired-slider
+            id="face"
+            value="${this.characterSettings.face}"
+            min="0"
+            max="5"
+            @change="${(e) =>
+              this._updateSetting('face', parseInt(e.detail.value))}"
+          ></wired-slider>
+
+          <label for="hatColor">Hat Color:</label>
+          <wired-slider
+            id="hatColor"
+            value="${this.characterSettings.hatColor}"
+            min="0"
+            max="9"
+            @change="${(e) =>
+              this._updateSetting('hatColor', parseInt(e.detail.value))}"
+          ></wired-slider>
+
+          <wired-checkbox
+            ?checked="${this.characterSettings.fire}"
+            @change="${(e) => this._updateSetting('fire', e.target.checked)}"
+            >On Fire</wired-checkbox
+          >
+        </div>
       </div>
-  <div class="controls-container">
-    <wired-input
-    name="accessories"
-    type="number"
-    min="0"
-    max="9"
-    placeholder="Accessories"
-    @change="${this.handleInputChange}"
-    ></wired-input>
-
-    <wired-input
-    name="base"
-    type="number"
-    min="1"
-    max="9"
-    placeholder="Base"
-    @change="${this.handleInputChange}"
-    ></wired-input>
-
-    <wired-input
-     name="face"
-    type="number"
-    min="0"
-    max="5"
-    placeholder="Face"
-    @change="${this.handleInputChange}"
-    ></wired-input>
-
-    <wired-input
-    name="faceitem"
-    type="number"
-    min="0"
-    max="9"
-    placeholder="Face Item"
-    @change="${this.handleInputChange}"
-    ></wired-input>
-
-    <wired-input
-    name="hair"
-    type="number"
-    min="0"
-    max="9"
-    placeholder="Hair"
-    @change="${this.handleInputChange}"
-    ></wired-input>
-
-    <wired-input
-    name="pants"
-    type="number"
-    min="0"
-    max="9"
-    placeholder="Pants"
-    @change="${this.handleInputChange}"
-    ></wired-input>
-  </div>
-  <h3><span>${this.t.title}:</span> ${this.title}</h3>
-  <slot></slot>
-</div>`;
+    `;
   }
 
-  /**
-   * haxProperties integration via file reference
-   */
-  static get haxProperties() {
-    return new URL(`./lib/${this.tag}.haxProperties.json`, import.meta.url)
-      .href;
+  _applySeedToSettings() {
+    const seed = this.characterSettings.seed;
+    const paddedSeed = seed.padStart(8, "0").slice(0, 8);
+    const values = paddedSeed.split("").map((v) => parseInt(v, 10));
+
+    [
+      this.characterSettings.base,
+      this.characterSettings.face,
+      this.characterSettings.faceitem,
+      this.characterSettings.hair,
+      this.characterSettings.pants,
+      this.characterSettings.shirt,
+      this.characterSettings.skin,
+      this.characterSettings.hatColor,
+    ] = values;
+
+    this.requestUpdate();
+  }
+
+  _updateSetting(key, value) {
+    this.characterSettings[key] = value;
+    this.requestUpdate();
   }
 }
 

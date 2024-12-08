@@ -5,9 +5,10 @@
 import { LitElement, html, css } from "lit";
 import { DDDSuper } from "@haxtheweb/d-d-d/d-d-d.js";
 import { I18NMixin } from "@haxtheweb/i18n-manager/lib/I18NMixin.js";
-import { WiredButton, WiredCheckbox, WiredCombo, WiredInput } from 'wired-elements';
+import { WiredButton, WiredCheckbox, WiredCombo, WiredInput } from "wired-elements";
 import "@haxtheweb/rpg-character/rpg-character.js";
 import "wired-elements";
+
 
 /**
  * `project-2a`
@@ -24,7 +25,7 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
   constructor() {
     super();
     this.seed = this.getInitialSeed();
-    this.charAttributes = {
+    this.characterSettings = {
       accessories: 0,
       base: 1,
       face: 0,
@@ -45,7 +46,7 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
   static get properties() {
     return {
       seed: { type: String },
-      charAttributes: { type: Object },
+      characterSettings: { type: Object },
     };
   }
 
@@ -85,19 +86,48 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
     `];
   }
 
+  getInitialSeed() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('seed') || this.generateRandomSeed();
+  }
+
+  getInitialSeed() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('seed') || this.generateRandomSeed();
+  }
+
+  updateSeedFromSettings() {
+    const { accessories, base, face, faceitem, hair, pants, shirt, skin, hatcolor } = this.characterSettings;
+    this.seed = `${accessories}${base}${face}${faceitem}${hair}${pants}${shirt}${skin}${hatcolor}`;
+    this.updateURL();
+  }
+
+  updateURL() {
+    const params = new URLSearchParams(this.characterSettings);
+    params.set('seed', this.seed);
+    history.replaceState({}, '', `?${params.toString()}`);
+  }
+
   handleInputChange(event) {
     const { name, value, type, checked } = event.target;
-    this.charAttributes[name] = type === 'checkbox' ? checked : value;
+    this.characterSettings[name] = type === 'checkbox' ? checked : value;
     this.requestUpdate();
-    //this.updateSeedFromSettings();
+    this.updateSeedFromSettings();
   }
 
   updateCharacter() {
     const character = this.shadowRoot.querySelector('rpg-character');
-    Object.entries(this.charAttributes).forEach(([key, value]) => {
+    Object.entries(this.characterSettings).forEach(([key, value]) => {
       character[key] = value;
     });
     character.seed = this.seed;
+  }
+
+  copyShareLink() {
+    const shareLink = window.location.href;
+    navigator.clipboard.writeText(shareLink).then(() => {
+      alert('Share link copied to clipboard!');
+    });
   }
 
   // Lit render the HTML
@@ -109,19 +139,19 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
           .seed="${this.seed}"
           width="300"
           height="400"
-          .accessories="${this.charAttributes.accessories}"
-          .base="${this.charAttributes.base}"
-          .face="${this.charAttributes.face}"
-          .faceitem="${this.charAttributes.faceitem}"
-          .hair="${this.charAttributes.hair}"
-          .pants="${this.charAttributes.pants}"
-          .shirt="${this.charAttributes.shirt}"
-          .skin="${this.charAttributes.skin}"
-          .hatcolor="${this.charAttributes.hatcolor}"
-          .hat="${this.charAttributes.hat}"
-          .fire="${this.charAttributes.fire}"
-          .walking="${this.charAttributes.walking}"
-          .circle="${this.charAttributes.circle}"
+          .accessories="${this.characterSettings.accessories}"
+          .base="${this.characterSettings.base}"
+          .face="${this.characterSettings.face}"
+          .faceitem="${this.characterSettings.faceitem}"
+          .hair="${this.characterSettings.hair}"
+          .pants="${this.characterSettings.pants}"
+          .shirt="${this.characterSettings.shirt}"
+          .skin="${this.characterSettings.skin}"
+          .hatcolor="${this.characterSettings.hatcolor}"
+          .hat="${this.characterSettings.hat}"
+          .fire="${this.characterSettings.fire}"
+          .walking="${this.characterSettings.walking}"
+          .circle="${this.characterSettings.circle}"
           ></rpg-character>
       </div>
   <div class="controls-container">
@@ -140,6 +170,42 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
     min="1"
     max="9"
     placeholder="Base"
+    @change="${this.handleInputChange}"
+    ></wired-input>
+
+    <wired-input
+     name="face"
+    type="number"
+    min="0"
+    max="5"
+    placeholder="Face"
+    @change="${this.handleInputChange}"
+    ></wired-input>
+
+    <wired-input
+    name="faceitem"
+    type="number"
+    min="0"
+    max="9"
+    placeholder="Face Item"
+    @change="${this.handleInputChange}"
+    ></wired-input>
+
+    <wired-input
+    name="hair"
+    type="number"
+    min="0"
+    max="9"
+    placeholder="Hair"
+    @change="${this.handleInputChange}"
+    ></wired-input>
+
+    <wired-input
+    name="pants"
+    type="number"
+    min="0"
+    max="9"
+    placeholder="Pants"
     @change="${this.handleInputChange}"
     ></wired-input>
   </div>

@@ -165,16 +165,6 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
               this._updateSetting('face', parseInt(e.detail.value))}"
           ></wired-slider>
 
-          <label for="base">Base:</label>
-          <wired-slider
-            id="base"
-            value="${this.characterSettings.base}"
-            min="0"
-            max="9"
-            @change="${(e) =>
-              this._updateSetting('base', parseInt(e.detail.value))}"
-          ></wired-slider>
-
           <label for="faceitem">Face Item:</label>
           <wired-slider
             id="faceitem"

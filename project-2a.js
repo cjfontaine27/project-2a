@@ -282,6 +282,13 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
     this.requestUpdate();
   }
 
+  _initializeFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    const seed = params.get("seed") || this.characterSettings.seed;
+    this.characterSettings.seed = seed;
+    this._applySeedToSettings(seed);
+  }
+
   _updateSetting(key, value) {
     this.characterSettings[key] = value;
     this.requestUpdate();

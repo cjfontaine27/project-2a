@@ -37,6 +37,7 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
       name: "",
       fire: false,
       walking: false,
+      leg: 0
     };
     this._applySeedToSettings();
   }

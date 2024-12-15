@@ -188,6 +188,12 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
             @change="${(e) => this._updateSetting('fire', e.target.checked)}"
             >On Fire</wired-checkbox
           >
+
+          <wired-checkbox
+          .checked="${this.characterSettings.walking}"
+          @change="${(e) => this._updateSetting('walking', e.target.checked)}"
+          > Walking </wired-checkbox>
+          
         </div>
       </div>
     `;

@@ -185,6 +185,16 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
               this._updateSetting('shirt', parseInt(e.detail.value))}"
           ></wired-slider>
 
+          <label for="pants">Pants:</label>
+          <wired-slider
+            id="pants"
+            value="${this.characterSettings.pants}"
+            min="0"
+            max="9"
+            @change="${(e) =>
+              this._updateSetting('pants', parseInt(e.detail.value))}"
+          ></wired-slider>
+
           <label for="skin">Skin:</label>
           <wired-slider
             id="skin"

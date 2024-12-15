@@ -143,15 +143,7 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
             placeholder="Enter character name"
             @input="${(e) => this._updateSetting('name', e.target.value)}"
           ></wired-input>
-
-          <label for="hairToggle">Hair:</label>
-          <wired-checkbox
-            id="hairToggle"
-            ?checked="${this.characterSettings.base === 1}"
-            @change="${(e) =>
-              this._updateSetting('base', e.target.checked ? 1 : 0)}"
-            >Has Hair</wired-checkbox
-          >
+          
 
           <label for="size">Character Size:</label>
           <wired-slider
@@ -184,16 +176,22 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
           ></wired-slider>
 
           <wired-checkbox
-            ?checked="${this.characterSettings.fire}"
-            @change="${(e) => this._updateSetting('fire', e.target.checked)}"
-            >On Fire</wired-checkbox
-          >
+          id="hairToggle"
+          ?checked="${this.characterSettings.base === 1}"
+          @change="${(e) =>
+            this._updateSetting('base', e.target.checked ? 1 : 0)}"
+          >Has Hair</wired-checkbox>
+
+          <wired-checkbox
+          ?checked="${this.characterSettings.fire}"
+          @change="${(e) => this._updateSetting('fire', e.target.checked)}"
+          >On Fire</wired-checkbox>
 
           <wired-checkbox
           .checked="${this.characterSettings.walking}"
           @change="${(e) => this._updateSetting('walking', e.target.checked)}"
           > Walking </wired-checkbox>
-          
+
         </div>
       </div>
     `;

@@ -248,6 +248,21 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
     `;
   }
 
+  _generateSeed() {
+    const {
+      base,
+      accessories,
+      face,
+      faceitem,
+      hair,
+      pants,
+      shirt,
+      skin,
+      hatColor,
+    } = this.characterSettings;
+    return `${base}${accessories}${face}${faceitem}${hair}${pants}${shirt}${skin}${hatColor}`.padEnd(8, "0");
+  }
+
   _applySeedToSettings() {
     const seed = this.characterSettings.seed;
     const paddedSeed = seed.padStart(8, "0").slice(0, 8);
@@ -270,6 +285,16 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
   _updateSetting(key, value) {
     this.characterSettings[key] = value;
     this.requestUpdate();
+  }
+
+  _updateURL() {
+    const params = new URLSearchParams(window.location.search);
+    params.set("seed", this.characterSettings.seed);
+  }
+
+  _generateShareLink() {
+    const url = `${window.location.origin}${window.location.pathname}?seed=${this.characterSettings.seed}`;
+    navigator.clipboard.writeText(url).then(() => alert("Link copied!"));
   }
 }
 

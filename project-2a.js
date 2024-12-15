@@ -267,22 +267,19 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
   }
 
   _applySeedToSettings() {
-    const seed = this.characterSettings.seed;
-    const paddedSeed = seed.padStart(8, "0").slice(0, 8);
-    const values = paddedSeed.split("").map((v) => parseInt(v, 10));
-
-    [
-      this.characterSettings.base,
-      this.characterSettings.face,
-      this.characterSettings.faceitem,
-      this.characterSettings.hair,
-      this.characterSettings.pants,
-      this.characterSettings.shirt,
-      this.characterSettings.skin,
-      this.characterSettings.hatColor,
-    ] = values;
-
-    this.requestUpdate();
+    const values = seed.split("").map(Number);
+    this.characterSettings = {
+      ...this.characterSettings,
+      base: values[0] % 2,
+      accessories: values[1],
+      face: values[2],
+      faceitem: values[3],
+      hair: values[4],
+      pants: values[5],
+      shirt: values[6],
+      skin: values[7],
+      hatColor: values[8] || 0,
+    };
   }
 
   _initializeFromURL() {

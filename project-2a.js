@@ -150,7 +150,7 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
             id="size"
             value="${this.characterSettings.size}"
             min="100"
-            max="600"
+            max="500"
             @change="${(e) =>
               this._updateSetting('size', parseInt(e.detail.value))}"
           ></wired-slider>
@@ -163,6 +163,16 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
             max="5"
             @change="${(e) =>
               this._updateSetting('face', parseInt(e.detail.value))}"
+          ></wired-slider>
+
+          <label for="faceitem">Face Item:</label>
+          <wired-slider
+            id="faceitem"
+            value="${this.characterSettings.faceitem}"
+            min="0"
+            max="9"
+            @change="${(e) =>
+              this._updateSetting('faceitem', parseInt(e.detail.value))}"
           ></wired-slider>
 
           <label for="hatColor">Hat Color:</label>

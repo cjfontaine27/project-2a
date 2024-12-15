@@ -254,7 +254,6 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
   _generateSeed() {
     const {
       base,
-      accessories,
       face,
       faceitem,
       hair,
@@ -263,7 +262,19 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
       skin,
       hatColor,
     } = this.characterSettings;
-    return `${base}${accessories}${face}${faceitem}${hair}${pants}${shirt}${skin}${hatColor}`.padEnd(8, "0");
+
+    const seedArray = [
+      base,
+      face,
+      faceitem,
+      hair,
+      pants,
+      shirt,
+      skin,
+      hatColor,
+    ];
+
+    return seedArray.map((val) => val.toString().padStart(1, "0")).join("").padEnd(8, "0");
   }
 
   _applySeedToSettings() {
@@ -293,7 +304,9 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
 
   _updateSetting(key, value) {
     this.characterSettings[key] = value;
-    this.requestUpdate();
+    this.characterSettings.seed = this._generateSeed();
+    this._applySeedToSettings();
+    this._updateURL();
   }
 
   _updateURL() {

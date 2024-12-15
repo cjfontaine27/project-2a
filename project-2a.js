@@ -243,6 +243,9 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
           @change="${(e) => this._updateSetting('walking', e.target.checked)}"
           > Walking </wired-checkbox>
 
+          <button @click="${this._generateShareLink}">Share</button>
+          <p id="share-link"></p>
+
         </div>
       </div>
     `;

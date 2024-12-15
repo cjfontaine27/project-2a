@@ -80,7 +80,9 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
           min-width: 300px;
           text-align: left;
         }
-        wired-input,
+        wired-input{
+          opacity: 1;
+        }
         wired-checkbox,
         wired-slider {
           display: block;

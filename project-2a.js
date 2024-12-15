@@ -287,9 +287,8 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
 
   _initializeFromURL() {
     const params = new URLSearchParams(window.location.search);
-    const seed = params.get("seed") || this.characterSettings.seed;
-    this.characterSettings.seed = seed;
-    this._applySeedToSettings(seed);
+    this.characterSettings.seed = params.get("seed") || this.characterSettings.seed;
+    this._applySeedToSettings();
   }
 
   _updateSetting(key, value) {
@@ -300,6 +299,7 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
   _updateURL() {
     const params = new URLSearchParams(window.location.search);
     params.set("seed", this.characterSettings.seed);
+    window.history.replaceState({}, "", `${window.location.pathname}?${params}`);
   }
 
   _generateShareLink() {

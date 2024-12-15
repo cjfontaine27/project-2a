@@ -175,6 +175,16 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
               this._updateSetting('hatColor', parseInt(e.detail.value))}"
           ></wired-slider>
 
+          <label for="glasses">Glasses:</label>
+          <wired-slider
+            id="glasses"
+            value="${this.characterSettings.glasses}"
+            min="0"
+            max="9"
+            @change="${(e) =>
+              this._updateSetting('glasses', parseInt(e.detail.value))}"
+          ></wired-slider>
+
           <wired-checkbox
           id="hairToggle"
           ?checked="${this.characterSettings.base === 1}"

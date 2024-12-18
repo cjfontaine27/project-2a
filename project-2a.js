@@ -251,54 +251,7 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
     `;
   }
 
-  _initializeFromURL() {
-    const params = new URLSearchParams(window.location.search);
-    const seed = params.get("seed");
-    if (seed) {
-      this._applySeedToSettings(seed);
-    }
-  }
-
-  _applySeedToSettings(seed) {
-    const [
-      base,
-      face,
-      faceitem,
-      hair,
-      pants,
-      shirt,
-      skin,
-      hatColor,
-      fire,
-      walking,
-      hat
-    ] = seed.split("-");
-
-
-    Object.assign(this.characterSettings, {
-      base: parseInt(base, 10),
-      face: parseInt(face, 10),
-      faceitem: parseInt(faceitem, 10),
-      hair: parseInt(hair, 10),
-      pants: parseInt(pants, 10),
-      shirt: parseInt(shirt, 10),
-      skin: parseInt(skin, 10),
-      hatColor: parseInt(hatColor, 10),
-      fire: fire === "1",
-      walking: walking === "1",
-      hat: hat || "none",
-    });
-
-    this.requestUpdate();
-  }
-
-  _updateSetting(key, value) {
-    this.characterSettings[key] = value;
-    this._updateSeed();
-    this.requestUpdate();
-  }
-
-  _updateSeed() {
+  _generateSeed() {
     const {
       base,
       face,
@@ -308,12 +261,9 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
       shirt,
       skin,
       hatColor,
-      fire,
-      walking,
-      hat
     } = this.characterSettings;
 
-    const seed = [
+    const seedArray = [
       base,
       face,
       faceitem,
@@ -322,26 +272,53 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
       shirt,
       skin,
       hatColor,
-      fire ? "1" : "0",
-      walking ? "1" : "0",
-      hat
-    ].join("-");
+    ];
 
-    this._updateURL(seed);
+    return seedArray.map((val) => val.toString().padStart(1, "0")).join("").padEnd(8, "0");
   }
 
-  _updateURL(seed) {
+  _applySeedToSettings() {
+    const seed = this.characterSettings.seed;
+    const paddedSeed = seed.padStart(8, "0").slice(0, 8);
+    const values = paddedSeed.split("").map((v) => parseInt(v, 10));
+
+    [
+      this.characterSettings.base,
+      this.characterSettings.face,
+      this.characterSettings.faceitem,
+      this.characterSettings.hair,
+      this.characterSettings.pants,
+      this.characterSettings.shirt,
+      this.characterSettings.skin,
+      this.characterSettings.hatColor,
+    ] = values;
+
+    this.requestUpdate();
+  }
+
+  _initializeFromURL() {
     const params = new URLSearchParams(window.location.search);
-    params.set("seed", seed);
+    this.characterSettings.seed = params.get("seed") || this.characterSettings.seed;
+    this._applySeedToSettings();
+  }
+
+  _updateSetting(key, value) {
+    this.characterSettings[key] = value;
+    this.characterSettings.seed = this._generateSeed();
+    this._applySeedToSettings();
+    this._updateURL();
+  }
+
+  _updateURL() {
+    const params = new URLSearchParams(window.location.search);
+    params.set("seed", this.characterSettings.seed);
     window.history.replaceState({}, "", `${window.location.pathname}?${params}`);
   }
 
   _generateShareLink() {
-    const params = new URLSearchParams(window.location.search);
-    const url = `${window.location.origin}${window.location.pathname}?${params}`;
+    const url = `${window.location.origin}${window.location.pathname}?seed=${this.characterSettings.seed}`;
     navigator.clipboard.writeText(url).then(() => alert("Link copied!"));
   }
-
 }
 
 globalThis.customElements.define(Project2a.tag, Project2a);

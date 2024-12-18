@@ -251,67 +251,38 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
     `;
   }
 
-  _generateSeed() {
-    const {
-      base,
-      face,
-      faceitem,
-      hair,
-      pants,
-      shirt,
-      skin,
-      hatColor,
-    } = this.characterSettings;
-
-    const seedArray = [
-      base,
-      face,
-      faceitem,
-      hair,
-      pants,
-      shirt,
-      skin,
-      hatColor,
-    ];
-
-    return seedArray.map((val) => val.toString().padStart(1, "0")).join("").padEnd(8, "0");
-  }
-
-  _applySeedToSettings() {
-    const seed = this.characterSettings.seed;
-    const paddedSeed = seed.padStart(8, "0").slice(0, 8);
-    const values = paddedSeed.split("").map((v) => parseInt(v, 10));
-
-    [
-      this.characterSettings.base,
-      this.characterSettings.face,
-      this.characterSettings.faceitem,
-      this.characterSettings.hair,
-      this.characterSettings.pants,
-      this.characterSettings.shirt,
-      this.characterSettings.skin,
-      this.characterSettings.hatColor,
-    ] = values;
-
-    this.requestUpdate();
-  }
-
   _initializeFromURL() {
     const params = new URLSearchParams(window.location.search);
-    this.characterSettings.seed = params.get("seed") || this.characterSettings.seed;
-    this._applySeedToSettings();
+    const encodedSeed = params.get("seed");
+    if (encodedSeed) {
+      try {
+        const decodedSeed = JSON.parse(atob(encodedSeed));
+        this._applySeedToSettings(decodedSeed);
+      } catch (error) {
+        console.error("Failed to decode seed: ", error);
+      }
+    }
+  }
+
+  _applySeedToSettings(seedData) {
+    Object.assign(this.characterSettings, seedData);
+    this.requestUpdate();
   }
 
   _updateSetting(key, value) {
     this.characterSettings[key] = value;
-    this.characterSettings.seed = this._generateSeed();
-    this._applySeedToSettings();
-    this._updateURL();
+    this._updateSeed();
+    this.requestUpdate();
+  }
+  _updateSeed() {
+    const encodedSeed = btoa(JSON.stringify(this.characterSettings));
+    this.characterSettings.seed = encodedSeed;
+    this._updateURL(encodedSeed);
   }
 
-  _updateURL() {
+  _updateURL(seed) {
     const params = new URLSearchParams(window.location.search);
-    params.set("seed", this.characterSettings.seed);
+    params.set("seed", seed);
     window.history.replaceState({}, "", `${window.location.pathname}?${params}`);
   }
 

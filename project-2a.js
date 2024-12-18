@@ -87,7 +87,7 @@ export class Project2a extends DDDSuper(I18NMixin(LitElement)) {
         wired-checkbox,
         wired-slider {
           display: block;
-          margin-bottom: 15px;
+          margin-bottom: 10px;
           max-width: 300px;
         }
         label {
